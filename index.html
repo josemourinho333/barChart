@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pyoo Bar Chart</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <style>
+    * {
+      font-family: 'roboto', sans-serif;
+    }
+
+    header {
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 30px;
+    }
+
+    #container {
+      width: 80%;
+      margin: auto;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .grid-header-container {
+      width: 100%;
+      display: grid;
+      grid-template-columns: 300px repeat(7, 1fr);
+    }
+
+    .name-header {
+      background-color: #232528;
+      color: #fff;
+      text-align: center;
+    }
+
+    .value-header {
+      background-color: #eaf6ff;
+      text-align: right;
+      width: 100%;
+    }
+
+    .grid-container {
+      width: 100%;
+      display: grid;
+      grid-template-columns: 300px 1fr;
+      margin-bottom: 10px;
+    }
+
+    .name, .value {
+      color: #fff;
+      font-weight: 600;
+      font-size: 20px;
+      padding: 10px 0px 10px 0px;
+      background-color: #0cce6b;
+    }
+
+    .name {
+      border-right: 3px solid #eaf6ff;
+      text-align: center;
+    }
+
+    .value {
+      text-align: right;
+    }
+
+    .add-container {
+      width: 80%;
+      margin: auto;
+    }
+
+    .new-name, .new-value, .color {
+      border: 1px solid #232528;
+      width: 150px;
+    }
+
+  </style>
+</head>
+<body>
+  <header>
+    <h1>
+      Premier League's Current Top Scorers vs Most Goals Scored In a Season
+    </h1>
+    <h4>
+      2022 - 2023
+    </h3>
+  </header>
+
+  <div id="container">
+
+    <div class="grid-header-container">
+      <div class="name-header">Player Name</div>
+      <div class="value-header">5</div>
+      <div class="value-header">10</div>
+      <div class="value-header">15</div>
+      <div class="value-header">20</div>
+      <div class="value-header">25</div>
+      <div class="value-header">30</div>
+      <div class="value-header">35</div>
+    </div>
+
+    <div class="grid-container">
+      <div class="name">Mohamed Salah - 2017/18</div>
+      <div class="value">32</div>
+    </div>
+
+    <div class="grid-container">
+      <div class="name" style="background-color: #d1103a">Mohamed Salah</div>
+      <div class="value" style="background-color: #d1103a">22</div>
+    </div>
+
+    <div class="grid-container">
+      <div class="name" style="background-color: #525053">Son Heung-Min</div>
+      <div class="value" style="background-color: #525053">19</div>
+    </div>
+
+    <div class="grid-container">
+      <div class="name" style="background-color: #ea6a1f">Cristiano Ronaldo</div>
+      <div class="value" style="background-color: #ea6a1f">18</div>
+    </div>
+
+  </div>
+
+  <div class="add-container">
+    <input type="text" class="new-name" placeholder="Name">
+    <input type="number" class="new-value" placeholder="Goals">
+    <input type="text" class="color" placeholder="Hexcode Color">
+    <button id="add">Add</button>
+  </div>
+
+
+  <script>
+    //function will iterate over .value class divs, grab the value string, parse and math.floor to a Number and use the Number to set it's width to represent the percentage as a bar.
+    //Need to find a way to grab the max value we're dividing each numbers by without manually putting it.
+    $(' .value ').each(function(index) {
+      let realWidth = Math.floor((parseInt($(this).text())/35) * 100);
+      $(this).css('width', realWidth+'%');
+    });
+
+
+
+    //create a function that will grab the inputs of name and goals, creates grid-container div, with name div and value div that will use the name and goals then run the function below to be able to set the width of the bar accordingly.
+    $('#add').click(function(name, value, color) {
+      name = $('.new-name').val();
+      value = parseInt($('.new-value').val());
+      color = $('.color').val();
+      let realWidth = Math.floor((parseInt($('.new-value').val())/35) * 100);
+      let $gridContainer = $('<div/>', {class: 'grid-container'}),
+          $gridName = $('<div/>', {class: 'name', text: name}),
+          $gridValue = $('<div/>', {
+            class: 'value',
+            text: value,
+            style: 'width:' + realWidth + '%'});
+
+
+
+      $gridContainer.append($gridName).appendTo('#container');
+      $gridContainer.append($gridValue).appendTo('#container');
+    })
+
+
+
+  </script>
+</body>
+</html>

@@ -137,16 +137,23 @@
   <script>
 
     const drawBarChart = function(data, options, element) {
+
       const barsOut = (data, options, element) => {
         let maxTick = options[1];
         for (let i = 0; i < data.length; i+=2) {
+          let colorR = Math.floor((Math.random() * 256));
+          let colorG = Math.floor((Math.random() * 256));
+          let colorB = Math.floor((Math.random() * 256));
+          let rgb = `${colorR}, ${colorG}, ${colorB}`;
           let realWidth = Math.floor((data[i+1]/maxTick)*100);
+
           let $gridContainer = $('<div/>', {class: 'grid-container'}),
-              $gridName = $('<div/>', {class: 'name', text: data[i]}),
+              $gridName = $('<div/>', {class: 'name', text: data[i], style: 'background-color: rgb(' + rgb + ');'}),
               $gridValue = $('<div/>', {
                 class: 'value',
                 text: data[i+1],
-                style: 'width: ' + realWidth + '%'});
+                style: 'width: ' + realWidth + '%;' + 'background-color: rgb(' + rgb + ');'});
+
           $gridContainer.append($gridName).appendTo(element);
           $gridContainer.append($gridValue).appendTo(element);
         }
@@ -157,7 +164,6 @@
         let maxTick = options[1];
         let tickBy = options[2];
         let ticks = maxTick/tickBy;
-        let tickStart = 0;
 
         let $gridHeaderContainer = $('<div/>', {class: 'grid-header-container'}),
             $nameHeader = $('<div/>', {class: 'name-header', text: nameHeader});
@@ -165,11 +171,11 @@
         $gridHeaderContainer.append($nameHeader).appendTo(element);
 
         for (let j = 0; j < ticks; j++) {
-          let $valueHeader = $('<div/>', {class: 'value-header', text: tickStart+=5});
+          let $valueHeader = $('<div/>', {class: 'value-header', text: (tickBy+=5)-5});
           $gridHeaderContainer.append($valueHeader).appendTo(element);
         }
       };
-
+      
       setTicks(options,element);
       barsOut(data, options, element);
     }

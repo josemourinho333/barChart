@@ -92,7 +92,7 @@
 
   <div id="container">
 
-    <div class="grid-header-container">
+    <!-- <div class="grid-header-container">
       <div class="name-header">Player Name</div>
       <div class="value-header">5</div>
       <div class="value-header">10</div>
@@ -101,9 +101,9 @@
       <div class="value-header">25</div>
       <div class="value-header">30</div>
       <div class="value-header">35</div>
-    </div>
+    </div> -->
 
-    <div class="grid-container">
+    <!-- <div class="grid-container">
       <div class="name">Mohamed Salah - 2017/18</div>
       <div class="value">32</div>
     </div>
@@ -121,7 +121,7 @@
     <div class="grid-container">
       <div class="name" style="background-color: #ea6a1f">Cristiano Ronaldo</div>
       <div class="value" style="background-color: #ea6a1f">18</div>
-    </div>
+    </div> -->
 
 
   </div>
@@ -136,14 +136,43 @@
 
   <script>
 
-    //function will iterate over .value class divs, grab the value string, parse and math.floor to a Number and use the Number to set it's width to represent the percentage as a bar.
-    //Need to find a way to grab the max value we're dividing each numbers by without manually putting it.
-    $(' .value ').each(function(index) {
-      let realWidth = Math.floor((parseInt($(this).text())/35) * 100);
-      $(this).css('width', realWidth+'%');
-    });
+    const drawBarChart = function(data, options, element) {
+      const barsOut = (data, options, element) => {
+        let maxTick = options[1];
+        for (let i = 0; i < data.length; i+=2) {
+          let realWidth = Math.floor((data[i+1]/maxTick)*100);
+          let $gridContainer = $('<div/>', {class: 'grid-container'}),
+              $gridName = $('<div/>', {class: 'name', text: data[i]}),
+              $gridValue = $('<div/>', {
+                class: 'value',
+                text: data[i+1],
+                style: 'width: ' + realWidth + '%'});
+          $gridContainer.append($gridName).appendTo(element);
+          $gridContainer.append($gridValue).appendTo(element);
+        }
+      };
 
+      const setTicks = (options, element) => {
+        let nameHeader = options[0];
+        let maxTick = options[1];
+        let tickBy = options[2];
+        let ticks = maxTick/tickBy;
+        let tickStart = 0;
 
+        let $gridHeaderContainer = $('<div/>', {class: 'grid-header-container'}),
+            $nameHeader = $('<div/>', {class: 'name-header', text: nameHeader});
+
+        $gridHeaderContainer.append($nameHeader).appendTo(element);
+
+        for (let j = 0; j < ticks; j++) {
+          let $valueHeader = $('<div/>', {class: 'value-header', text: tickStart+=5});
+          $gridHeaderContainer.append($valueHeader).appendTo(element);
+        }
+      };
+
+      setTicks(options,element);
+      barsOut(data, options, element);
+    }
 
     //create a function that will grab the inputs of name and goals, creates grid-container div, with name div and value div that will use the name and goals then run the function below to be able to set the width of the bar accordingly.
     $('#add').click(function(name, value, color) {
@@ -162,6 +191,7 @@
       $gridContainer.append($gridValue).appendTo('#container');
     })
 
+    console.log(drawBarChart(['Mohamed Salah - 2017/18', '32', 'Mohamed Salah', '22', 'Son Heung-Min', '19', 'Cristiano Ronaldo', '18'], ['Player Name' ,35, 5], $('#container')));
 
   </script>
 </body>

@@ -68,14 +68,36 @@
       text-align: right;
     }
 
-    .add-container {
+    .new-name, .new-value, .color {
+      border: 1px solid #232528;
+      width: 150px;
+    }
+
+    .button-container {
       width: 80%;
       margin: auto;
     }
 
-    .new-name, .new-value, .color {
+    .button-group {
+      margin: 10px;
+    }
+
+    button {
+      background-color: #eaf6ff;
       border: 1px solid #232528;
-      width: 150px;
+      color: #232528;
+      padding: 5px 10px 5px 10px;
+      border-radius: 10px;
+      width: 10%;
+    }
+
+    button:hover {
+      background-color: #232528;
+      color: white;
+    }
+
+    .edit-data {
+      display: none;
     }
 
   </style>
@@ -92,46 +114,28 @@
 
   <div id="container">
 
-    <!-- <div class="grid-header-container">
-      <div class="name-header">Player Name</div>
-      <div class="value-header">5</div>
-      <div class="value-header">10</div>
-      <div class="value-header">15</div>
-      <div class="value-header">20</div>
-      <div class="value-header">25</div>
-      <div class="value-header">30</div>
-      <div class="value-header">35</div>
-    </div> -->
 
-    <!-- <div class="grid-container">
-      <div class="name">Mohamed Salah - 2017/18</div>
-      <div class="value">32</div>
+  </div>
+
+  <div class="button-container">
+
+    <div class="add-container button-group">
+      <input type="text" class="new-name" placeholder="Name">
+      <input type="number" class="new-value" placeholder="Goals">
+      <input type="text" class="color" placeholder="Hexcode Color">
+      <button id="add">Add</button>
     </div>
 
-    <div class="grid-container">
-      <div class="name" style="background-color: #d1103a">Mohamed Salah</div>
-      <div class="value" style="background-color: #d1103a">22</div>
+    <div class="edit-container button-group">
+      <textarea name="edit-area" id="" cols="30" rows="10" class="edit-data" placeholder="Change any values to what you want, or delete the row to delete data"></textarea>
+      <button id="submit" class="edit-data">Submit</button>
+      <button id="edit">Edit Data</button>
     </div>
 
-    <div class="grid-container">
-      <div class="name" style="background-color: #525053">Son Heung-Min</div>
-      <div class="value" style="background-color: #525053">19</div>
-    </div>
-
-    <div class="grid-container">
-      <div class="name" style="background-color: #ea6a1f">Cristiano Ronaldo</div>
-      <div class="value" style="background-color: #ea6a1f">18</div>
-    </div> -->
 
 
   </div>
 
-  <div class="add-container">
-    <input type="text" class="new-name" placeholder="Name">
-    <input type="number" class="new-value" placeholder="Goals">
-    <input type="text" class="color" placeholder="Hexcode Color">
-    <button id="add">Add</button>
-  </div>
 
 
   <script>
@@ -156,6 +160,7 @@
 
           $gridContainer.append($gridName).appendTo(element);
           $gridContainer.append($gridValue).appendTo(element);
+
         }
       };
 
@@ -175,10 +180,10 @@
           $gridHeaderContainer.append($valueHeader).appendTo(element);
         }
       };
-      
-      setTicks(options,element);
+
+      setTicks(options, element);
       barsOut(data, options, element);
-    }
+    };
 
     //create a function that will grab the inputs of name and goals, creates grid-container div, with name div and value div that will use the name and goals then run the function below to be able to set the width of the bar accordingly.
     $('#add').click(function(name, value, color) {
@@ -187,15 +192,20 @@
       color = $('.color').val();
       let realWidth = Math.floor((parseInt($('.new-value').val())/35) * 100);
       let $gridContainer = $('<div/>', {class: 'grid-container'}),
-          $gridName = $('<div/>', {class: 'name', text: name, style: 'background-color:#' + color}),
+          $gridName = $('<div/>', {class: 'name', text: name, style: 'background-color:' + color}),
           $gridValue = $('<div/>', {
             class: 'value',
             text: value,
-            style: 'width:' + realWidth + '%' + ';' + 'background-color:#' + color});
+            style: 'width:' + realWidth + '%' + ';' + 'background-color:' + color});
 
       $gridContainer.append($gridName).appendTo('#container');
       $gridContainer.append($gridValue).appendTo('#container');
+    });
+
+    $('#edit').click(function() {
+      $('.edit-data').show();
     })
+
 
     console.log(drawBarChart(['Mohamed Salah - 2017/18', '32', 'Mohamed Salah', '22', 'Son Heung-Min', '19', 'Cristiano Ronaldo', '18'], ['Player Name' ,35, 5], $('#container')));
 

@@ -88,7 +88,7 @@
       color: #232528;
       padding: 5px 10px 5px 10px;
       border-radius: 10px;
-      width: 15%;
+      width: 20%;
     }
 
     button:hover {
@@ -109,6 +109,21 @@
       margin: 10px 0px 10px 0px;
     }
 
+    .create-container {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .create-container > button {
+      margin: 10px 0px 10px 0px;
+    }
+
+    .create-data {
+      display: none;
+      margin: 5px;
+    }
+
+
   </style>
 </head>
 <body>
@@ -120,6 +135,21 @@
       2022 - 2023
     </h3>
   </header>
+
+  <div class="button-container">
+    <div class="create-container button-group">
+      <button class="new">Create</button>
+      <div class="textArea-labels create-data">Bar label names separated by commas, here's sample data.</div>
+      <textarea name="" id="bar-labels" cols="30" rows="1" placeholder="Names - Separate by comma" class="create-data">Mohamed Salah - 2017/18,Mohamed Salah,Son Heung-Min,Cristiano Ronaldo</textarea>
+      <div class="textArea-labels create-data">Bar value numbers separated by commas, here's sample data.</div>
+      <textarea name="" id="bar-values" cols="30" rows="1" placeholder="Numbers -Separate by comma" class="create-data">32,22,19,18</textarea>
+      <div class="textArea-labels create-data">Enter a categorization name for the bar labels. Sample given.</div>
+      <textarea name="" id="bar-header-name" cols="30" rows="1" placeholder="" class="create-data">Player Name</textarea>
+      <div class="textArea-labels create-data">Two numbers, separate by a comma, sets max value for legend and amount to increment by. Sample given.</div>
+      <textarea name="" id="bar-legends" cols="30" rows="1" placeholder="Numbers -Separate by comma" class="create-data">35,5</textarea>
+      <button class="subit-new create-data">Submit</button>
+    </div>
+  </div>
 
   <div id="container">
 
@@ -149,50 +179,78 @@
 
   <script>
 
-    const drawBarChart = function(data, options, element) {
+    $('.new').click(function() {
+      if ($(this).text() === 'Create') {
+        $(this).text('Cancel');
+        $('.create-data').show();
+      } else {
+        $(this).text('Create');
+        $('.create-data').hide();
+      }
+    });
+
+    $('.subit-new').click(function drawBarChart(data, options, element) {
+
+      let barNames = $('#bar-labels').text();
+      let barNamesArray = barNames.split(',');
+      let barValues = $('#bar-values').text();
+      let barValuesArray = barValues.split(',');
+      data = barNamesArray.concat(barValuesArray);
+
+      let barHeader = $('#bar-header-name').text();
+      let barHeaderArray = [barHeader];
+      let barLegends = $('#bar-legends').text();
+      let barLegendsArray = barLegends.split(',');
+      options = barHeaderArray.concat(barLegendsArray);
+
+      element = $('#container');
 
       const barsOut = (data, options, element) => {
-        let maxTick = options[1];
-        for (let i = 0; i < data.length; i+=2) {
-          let colorR = Math.floor((Math.random() * 256));
-          let colorG = Math.floor((Math.random() * 256));
-          let colorB = Math.floor((Math.random() * 256));
-          let rgb = `${colorR}, ${colorG}, ${colorB}`;
-          let realWidth = Math.floor((data[i+1]/maxTick)*100);
+          let maxTick = options[1];
+          for (let i = 0; i < data.length/2; i++) {
+            let colorR = Math.floor((Math.random() * 256));
+            let colorG = Math.floor((Math.random() * 256));
+            let colorB = Math.floor((Math.random() * 256));
+            let rgb = `${colorR}, ${colorG}, ${colorB}`;
+            let realWidth = Math.floor((data[i+(data.length/2)]/maxTick)*100);
 
-          let $gridContainer = $('<div/>', {class: 'grid-container'}),
-              $gridName = $('<div/>', {class: 'name', text: data[i], style: 'background-color: rgb(' + rgb + ');'}),
-              $gridValue = $('<div/>', {
-                class: 'value',
-                text: data[i+1],
-                style: 'width: ' + realWidth + '%;' + 'background-color: rgb(' + rgb + ');'});
+            let $gridContainer = $('<div/>', {class: 'grid-container'}),
+                $gridName = $('<div/>', {class: 'name', text: data[i], style: 'background-color: rgb(' + rgb + ');'}),
+                $gridValue = $('<div/>', {
+                  class: 'value',
+                  text: data[i+(data.length/2)],
+                  style: 'width: ' + realWidth + '%;' + 'background-color: rgb(' + rgb + ');'});
 
-          $gridContainer.append($gridName).appendTo(element);
-          $gridContainer.append($gridValue).appendTo(element);
+            $gridContainer.append($gridName).appendTo(element);
+            $gridContainer.append($gridValue).appendTo(element);
 
-        }
-      };
+          }
+        };
 
-      const setTicks = (options, element) => {
-        let nameHeader = options[0];
-        let maxTick = options[1];
-        let tickBy = options[2];
-        let ticks = maxTick/tickBy;
+        const setTicks = (options, element) => {
+          let nameHeader = options[0];
+          let maxTick = parseInt(options[1]);
+          let tickBy = parseInt(options[2]);
+          let ticks = maxTick/tickBy;
 
-        let $gridHeaderContainer = $('<div/>', {class: 'grid-header-container'}),
-            $nameHeader = $('<div/>', {class: 'name-header', text: nameHeader});
+          let $gridHeaderContainer = $('<div/>', {class: 'grid-header-container'}),
+              $nameHeader = $('<div/>', {class: 'name-header', text: nameHeader});
 
-        $gridHeaderContainer.append($nameHeader).appendTo(element);
+          $gridHeaderContainer.append($nameHeader).appendTo(element);
 
-        for (let j = 0; j < ticks; j++) {
-          let $valueHeader = $('<div/>', {class: 'value-header', text: (tickBy+=5)-5});
-          $gridHeaderContainer.append($valueHeader).appendTo(element);
-        }
-      };
+          for (let j = 0; j < ticks; j++) {
+            let $valueHeader = $('<div/>', {class: 'value-header', text: (tickBy+=5)-5});
+            $gridHeaderContainer.append($valueHeader).appendTo(element);
+          }
+        };
 
-      setTicks(options, element);
-      barsOut(data, options, element);
-    };
+        setTicks(options, element);
+        barsOut(data, options, element);
+
+        $('.new').text('Create');
+        $('.create-data').hide();
+
+    });
 
     //create a function that will grab the inputs of name and goals, creates grid-container div, with name div and value div that will use the name and goals then run the function below to be able to set the width of the bar accordingly.
     $('#add').click(function(name, value, color) {
@@ -242,30 +300,37 @@
     });
 
     $('#submit').click(function() {
-      let changes = $('#edit-space').text();
+      $('.grid-container').remove();
+
+      let changes = $('#edit-space').val();
       let changesArray = changes.split(',');
       let maxTick = $('.value-header').last();
-      $('.grid-container').remove();
+      console.log(changesArray);
       for (let i = 0; i < changesArray.length/2 ; i++) {
         let colorR = Math.floor((Math.random() * 256));
         let colorG = Math.floor((Math.random() * 256));
         let colorB = Math.floor((Math.random() * 256));
         let rgb = `${colorR}, ${colorG}, ${colorB}`;
-        let realWidth = Math.floor((changesArray[i+4]/maxTick.text())*100);
+        let realWidth = Math.floor((changesArray[i+(changesArray.length/2)]/maxTick.text())*100);
 
         let $gridContainer = $('<div/>', {class: 'grid-container'}),
             $gridName = $('<div/>', {class: 'name', text: changesArray[i], style: 'background-color: rgb(' + rgb + ');'}),
             $gridValue = $('<div/>', {
               class: 'value',
-              text: changesArray[i+4],
+              text: changesArray[i+(changesArray.length/2)],
               style: 'width: ' + realWidth + '%;' + 'background-color: rgb(' + rgb + ');'});
 
         $gridContainer.append($gridName).appendTo($('#container'));
         $gridContainer.append($gridValue).appendTo($('#container'));
       }
+
+      $('#edit-space').empty();
+      $('.edit-data').hide();
+      $('#edit').text('Edit Data');
     });
 
-    console.log(drawBarChart(['Mohamed Salah - 2017/18', '32', 'Mohamed Salah', '22', 'Son Heung-Min', '19', 'Cristiano Ronaldo', '18'], ['Player Name' ,35, 5], $('#container')));
+
+    // console.log(drawBarChart(['Mohamed Salah - 2017/18', '32', 'Mohamed Salah', '22', 'Son Heung-Min', '19', 'Cristiano Ronaldo', '18'], ['Player Name' ,35, 5], $('#container')));
 
   </script>
 </body>

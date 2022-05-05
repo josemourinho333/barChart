@@ -88,7 +88,7 @@
       color: #232528;
       padding: 5px 10px 5px 10px;
       border-radius: 10px;
-      width: 10%;
+      width: 15%;
     }
 
     button:hover {
@@ -98,6 +98,15 @@
 
     .edit-data {
       display: none;
+    }
+
+    .edit-container {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .edit-container > button {
+      margin: 10px 0px 10px 0px;
     }
 
   </style>
@@ -127,9 +136,9 @@
     </div>
 
     <div class="edit-container button-group">
-      <textarea name="edit-area" id="" cols="30" rows="10" class="edit-data" placeholder="Change any values to what you want, or delete the row to delete data"></textarea>
-      <button id="submit" class="edit-data">Submit</button>
       <button id="edit">Edit Data</button>
+      <textarea name="edit-area" id="edit-space" cols="30" rows="10" class="edit-data" placeholder="Change any values to what you want, or delete the row to delete data"></textarea>
+      <button id="submit" class="edit-data">Submit</button>
     </div>
 
 
@@ -187,6 +196,8 @@
 
     //create a function that will grab the inputs of name and goals, creates grid-container div, with name div and value div that will use the name and goals then run the function below to be able to set the width of the bar accordingly.
     $('#add').click(function(name, value, color) {
+      $('.edit-data').hide();
+      $('#edit').text('Edit Data');
       name = $('.new-name').val();
       value = parseInt($('.new-value').val());
       color = $('.color').val();
@@ -203,8 +214,32 @@
     });
 
     $('#edit').click(function() {
-      $('.edit-data').show();
-    })
+      let editData = $('.edit-data');
+      let editButton = $('#edit');
+
+      if (editButton.text() === 'Edit Data') {
+        editData.show();
+        editButton.text('Close');
+        const nameArray = [];
+        const valueArray = [];
+        const names = $('.name');
+        const values = $('.value');
+        for (let i = 0; i < names.length; i++) {
+          nameArray.push(names[i].innerText);
+        };
+
+        for (let j = 0; j < values.length; j++) {
+          valueArray.push(values[j].innerText);
+        };
+
+        $('#edit-space').text('[' + nameArray + '] \n' + '[' + valueArray + ']');
+
+      } else {
+        editData.hide();
+        editButton.text('Edit Data');
+      };
+
+    });
 
 
     console.log(drawBarChart(['Mohamed Salah - 2017/18', '32', 'Mohamed Salah', '22', 'Son Heung-Min', '19', 'Cristiano Ronaldo', '18'], ['Player Name' ,35, 5], $('#container')));

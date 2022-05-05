@@ -232,7 +232,7 @@
           valueArray.push(values[j].innerText);
         };
 
-        $('#edit-space').text('[' + nameArray + '] \n' + '[' + valueArray + ']');
+        $('#edit-space').text(nameArray + ',' + valueArray);
 
       } else {
         editData.hide();
@@ -241,6 +241,29 @@
 
     });
 
+    $('#submit').click(function() {
+      let changes = $('#edit-space').text();
+      let changesArray = changes.split(',');
+      let maxTick = $('.value-header').last();
+      $('.grid-container').remove();
+      for (let i = 0; i < changesArray.length/2 ; i++) {
+        let colorR = Math.floor((Math.random() * 256));
+        let colorG = Math.floor((Math.random() * 256));
+        let colorB = Math.floor((Math.random() * 256));
+        let rgb = `${colorR}, ${colorG}, ${colorB}`;
+        let realWidth = Math.floor((changesArray[i+4]/maxTick.text())*100);
+
+        let $gridContainer = $('<div/>', {class: 'grid-container'}),
+            $gridName = $('<div/>', {class: 'name', text: changesArray[i], style: 'background-color: rgb(' + rgb + ');'}),
+            $gridValue = $('<div/>', {
+              class: 'value',
+              text: changesArray[i+4],
+              style: 'width: ' + realWidth + '%;' + 'background-color: rgb(' + rgb + ');'});
+
+        $gridContainer.append($gridName).appendTo($('#container'));
+        $gridContainer.append($gridValue).appendTo($('#container'));
+      }
+    });
 
     console.log(drawBarChart(['Mohamed Salah - 2017/18', '32', 'Mohamed Salah', '22', 'Son Heung-Min', '19', 'Cristiano Ronaldo', '18'], ['Player Name' ,35, 5], $('#container')));
 

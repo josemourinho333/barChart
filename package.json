@@ -1,7 +1,7 @@
 {
   "name": "stretch-project-1",
   "version": "0.0.0",
-  "description": "",
+  "description": "Settings for LHL when reviewed/graded",
   "devDependencies": {
     "eslint": "^3.19.0",
     "eslint-config-lighthouselabs": "lighthouse-labs/eslint-config-lighthouselabs"

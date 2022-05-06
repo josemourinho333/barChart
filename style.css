@@ -1,0 +1,116 @@
+* {
+  font-family: 'roboto', sans-serif;
+}
+
+header {
+  text-align: center;
+}
+
+h1 {
+  font-size: 30px;
+}
+
+#container {
+  width: 80%;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.grid-header-container {
+  width: 100%;
+  display: grid;
+}
+
+.name-header {
+  background-color: #232528;
+  color: #fff;
+  text-align: center;
+}
+
+.value-header {
+  background-color: #eaf6ff;
+  text-align: right;
+  width: 100%;
+}
+
+.grid-container {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  margin-bottom: 10px;
+}
+
+.name, .value {
+  color: #fff;
+  font-weight: 600;
+  font-size: 20px;
+  padding: 10px 0px 10px 0px;
+  background-color: #0cce6b;
+}
+
+.name {
+  border-right: 3px solid #eaf6ff;
+  text-align: center;
+}
+
+.value {
+  text-align: right;
+}
+
+.new-name, .new-value, .color {
+  border: 1px solid #232528;
+  width: 150px;
+}
+
+.button-container {
+  width: 80%;
+  margin: auto;
+}
+
+.button-group {
+  margin: 10px;
+  align-items: center;
+  text-align: center;
+}
+
+button {
+  background-color: #eaf6ff;
+  border: 1px solid #232528;
+  color: #232528;
+  padding: 5px 10px 5px 10px;
+  border-radius: 10px;
+  width: 20%;
+}
+
+button:hover {
+  background-color: #232528;
+  color: white;
+}
+
+.edit-data {
+  display: none;
+}
+
+.edit-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.edit-container > button {
+  margin: 10px 0px 10px 0px;
+}
+
+.create-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.create-container > button {
+  margin: 10px 0px 10px 0px;
+}
+
+.create-data {
+  display: none;
+  margin: 5px;
+}

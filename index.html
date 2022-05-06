@@ -5,184 +5,49 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Pyoo Bar Chart</title>
+  <link rel="stylesheet" href="style.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-  <style>
-    * {
-      font-family: 'roboto', sans-serif;
-    }
-
-    header {
-      text-align: center;
-    }
-
-    h1 {
-      font-size: 30px;
-    }
-
-    #container {
-      width: 80%;
-      margin: auto;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .grid-header-container {
-      width: 100%;
-      display: grid;
-      /* grid-template-columns: 300px repeat(7, 1fr); */
-    }
-
-    .name-header {
-      background-color: #232528;
-      color: #fff;
-      text-align: center;
-    }
-
-    .value-header {
-      background-color: #eaf6ff;
-      text-align: right;
-      width: 100%;
-    }
-
-    .grid-container {
-      width: 100%;
-      display: grid;
-      grid-template-columns: 300px 1fr;
-      margin-bottom: 10px;
-    }
-
-    .name, .value {
-      color: #fff;
-      font-weight: 600;
-      font-size: 20px;
-      padding: 10px 0px 10px 0px;
-      background-color: #0cce6b;
-    }
-
-    .name {
-      border-right: 3px solid #eaf6ff;
-      text-align: center;
-    }
-
-    .value {
-      text-align: right;
-    }
-
-    .new-name, .new-value, .color {
-      border: 1px solid #232528;
-      width: 150px;
-    }
-
-    .button-container {
-      width: 80%;
-      margin: auto;
-    }
-
-    .button-group {
-      margin: 10px;
-      align-items: center;
-      text-align: center;
-    }
-
-    button {
-      background-color: #eaf6ff;
-      border: 1px solid #232528;
-      color: #232528;
-      padding: 5px 10px 5px 10px;
-      border-radius: 10px;
-      width: 20%;
-    }
-
-    button:hover {
-      background-color: #232528;
-      color: white;
-    }
-
-    .edit-data {
-      display: none;
-    }
-
-    .edit-container {
-      display: flex;
-      flex-direction: column;
-    }
-
-    .edit-container > button {
-      margin: 10px 0px 10px 0px;
-    }
-
-    .create-container {
-      display: flex;
-      flex-direction: column;
-    }
-
-    .create-container > button {
-      margin: 10px 0px 10px 0px;
-    }
-
-    .create-data {
-      display: none;
-      margin: 5px;
-    }
-
-
-  </style>
 </head>
 <body>
   <header>
-    <h1>
-      Premier League's Current Top Scorers vs Most Goals Scored In a Season
-    </h1>
-    <h4>
-      2022 - 2023
-    </h3>
+    <h1>Premier League's Current Top Scorers vs Most Goals Scored In a Season</h1>
+    <h4>2022 - 2023
+</h4>
   </header>
 
   <div class="button-container">
     <div class="create-container button-group">
       <button class="new">Create</button>
-      <div class="textArea-labels create-data">Bar label names separated by commas, here's sample data.</div>
+      <div class="create-data">Bar label names separated by commas, here's sample data.</div>
       <textarea name="" id="bar-labels" cols="100" rows="1" placeholder="Names - Separate by comma" class="create-data">Mohamed Salah - 2017/18,Mohamed Salah,Son Heung-Min,Cristiano Ronaldo</textarea>
-      <div class="textArea-labels create-data">Bar value numbers separated by commas, here's sample data.</div>
+      <div class="create-data">Bar value numbers separated by commas, here's sample data.</div>
       <textarea name="" id="bar-values" cols="100" rows="1" placeholder="Numbers -Separate by comma" class="create-data">32,22,19,18</textarea>
-      <div class="textArea-labels create-data">Enter a categorization name for the bar labels. Sample given.</div>
+      <div class="create-data">Enter a categorization name for the bar labels. Sample given.</div>
       <textarea name="" id="bar-header-name" cols="100" rows="1" placeholder="" class="create-data">Player Name</textarea>
-      <div class="textArea-labels create-data">Two numbers, separate by a comma, sets max value for legend and amount to increment by. Sample given. /n I'll add a function to add ticks later. </div>
+      <div class="create-data">Two numbers, separate by a comma, sets max value for legend and amount to increment by. Sample given. /n I'll add a function to add ticks later. </div>
       <textarea name="" id="bar-legends" cols="100" rows="1" placeholder="Numbers -Separate by comma" class="create-data">35,5</textarea>
       <button class="subit-new create-data">Submit</button>
     </div>
   </div>
 
-  <div id="container">
-
-
-
-  </div>
+  <div id="container"></div>
 
   <div class="button-container">
-
     <div class="add-container button-group">
       <input type="text" class="new-name" placeholder="Name">
       <input type="number" class="new-value" placeholder="Goals">
       <input type="text" class="color" placeholder="Hexcode Color">
       <button id="add">Add</button>
     </div>
-
     <div class="edit-container button-group">
       <button id="edit">Edit Data</button>
-      <textarea name="edit-area" id="edit-space" cols="100" rows="10" class="edit-data" placeholder="Change any values to what you want, or delete the row to delete data"></textarea>
+      <textarea name="edit-area" id="edit-space" cols="100" rows="10" class="edit-data"></textarea>
       <button id="submit" class="edit-data">Submit</button>
     </div>
-
-
-
   </div>
 
-
-
   <script>
-
-    //Create button function - controls displaying info to create a chart and submit and cancelling.
+    // Create button function - controls displaying info to create a chart and submit and cancelling.
     $('.new').click(function() {
       if ($(this).text() === 'Create') {
         $(this).text('Cancel');
@@ -193,27 +58,27 @@
       }
     });
 
-    //Main function of the project. Creates a bar chart after grabbing the values from create section.
+    // Main function of the project. Creates a bar chart after grabbing the values from create section.
     $('.subit-new').click(function drawBarChart(data, options, element) {
 
-      //Declaring variables and grabbing the inputs for the data that will be displayed in the chart then storing them as an array.
+      // Declaring variables and grabbing the inputs for the data that will be displayed in the chart then storing them as an array.
       let barNames = $('#bar-labels').text();
       let barNamesArray = barNames.split(',');
       let barValues = $('#bar-values').text();
       let barValuesArray = barValues.split(',');
       data = barNamesArray.concat(barValuesArray);
 
-      //Declaring variables and grabbing the inputs for the chart settings storing them as an array.
+      // Declaring variables and grabbing the inputs for the chart settings storing them as an array.
       let barHeader = $('#bar-header-name').text();
       let barHeaderArray = [barHeader];
       let barLegends = $('#bar-legends').val();
       let barLegendsArray = barLegends.split(',');
       options = barHeaderArray.concat(barLegendsArray);
 
-      //Declaring a variable where the chart will be rendered inside
+      // Declaring a variable where the chart will be rendered inside
       element = $('#container');
 
-      //Called to make the bars and the bars names and append them into appropriate html structure with right classes with random colors.
+      // Called to make the bars and the bars names and append them into appropriate html structure with right classes with random colors.
       const barsOut = (data, options, element) => {
           let maxTick = options[1];
           for (let i = 0; i < data.length/2; i++) {
@@ -235,7 +100,7 @@
           }
         };
 
-        //Called to make the bar header label and the ticks for the graph
+        // Called to make the bar header label and the ticks for the graph
         const setTicks = (options, element) => {
           let nameHeader = options[0];
           let maxTick = parseInt(options[1]);
@@ -244,8 +109,8 @@
           let ticks = maxTick/tickBy;
 
           let $gridHeaderContainer = $('<div/>', {
-              class: 'grid-header-container',
-              style: 'grid-template-columns: 300px repeat(' + ticks + ', 1fr)'
+                class: 'grid-header-container',
+                style: 'grid-template-columns: 300px repeat(' + ticks + ', 1fr)'
               }),
               $nameHeader = $('<div/>', {class: 'name-header', text: nameHeader});
 
@@ -259,14 +124,12 @@
 
         setTicks(options, element);
         barsOut(data, options, element);
-
-        //Hiding the create section once submit button is clicked
+        // Hiding the create section once submit button is clicked
         $('.new').text('Create');
         $('.create-data').hide();
-
     });
 
-    //Function that will grab the inputs and add a new bar
+    // Function that will grab the inputs and add a new bar
     $('#add').click(function(name, value, color) {
       $('.edit-data').hide();
       $('#edit').text('Edit Data');
@@ -285,7 +148,7 @@
       $gridContainer.append($gridValue).appendTo('#container');
     });
 
-    //Function that will display textarea and submit button for a user to see. Grabs in the current logged bar data and puts them in the textarea.
+    // Function that will display textarea and submit button for a user to see. Grabs in the current logged bar data and puts them in the textarea.
     $('#edit').click(function() {
       let editData = $('.edit-data');
       let editButton = $('#edit');
@@ -311,10 +174,9 @@
         editData.hide();
         editButton.text('Edit Data');
       };
-
     });
 
-    //Function called when Submit button is called after editing the values inside the text area.
+    // Function called when Submit button is called after editing the values inside the text area.
     $('#submit').click(function() {
       $('.grid-container').remove();
 
@@ -343,10 +205,6 @@
       $('.edit-data').hide();
       $('#edit').text('Edit Data');
     });
-
-    
-    // console.log(drawBarChart(['Mohamed Salah - 2017/18', '32', 'Mohamed Salah', '22', 'Son Heung-Min', '19', 'Cristiano Ronaldo', '18'], ['Player Name' ,35, 5], $('#container')));
-
   </script>
 </body>
 </html>

@@ -29,7 +29,7 @@
     .grid-header-container {
       width: 100%;
       display: grid;
-      grid-template-columns: 300px repeat(7, 1fr);
+      /* grid-template-columns: 300px repeat(7, 1fr); */
     }
 
     .name-header {
@@ -80,6 +80,8 @@
 
     .button-group {
       margin: 10px;
+      align-items: center;
+      text-align: center;
     }
 
     button {
@@ -140,18 +142,19 @@
     <div class="create-container button-group">
       <button class="new">Create</button>
       <div class="textArea-labels create-data">Bar label names separated by commas, here's sample data.</div>
-      <textarea name="" id="bar-labels" cols="30" rows="1" placeholder="Names - Separate by comma" class="create-data">Mohamed Salah - 2017/18,Mohamed Salah,Son Heung-Min,Cristiano Ronaldo</textarea>
+      <textarea name="" id="bar-labels" cols="100" rows="1" placeholder="Names - Separate by comma" class="create-data">Mohamed Salah - 2017/18,Mohamed Salah,Son Heung-Min,Cristiano Ronaldo</textarea>
       <div class="textArea-labels create-data">Bar value numbers separated by commas, here's sample data.</div>
-      <textarea name="" id="bar-values" cols="30" rows="1" placeholder="Numbers -Separate by comma" class="create-data">32,22,19,18</textarea>
+      <textarea name="" id="bar-values" cols="100" rows="1" placeholder="Numbers -Separate by comma" class="create-data">32,22,19,18</textarea>
       <div class="textArea-labels create-data">Enter a categorization name for the bar labels. Sample given.</div>
-      <textarea name="" id="bar-header-name" cols="30" rows="1" placeholder="" class="create-data">Player Name</textarea>
-      <div class="textArea-labels create-data">Two numbers, separate by a comma, sets max value for legend and amount to increment by. Sample given.</div>
-      <textarea name="" id="bar-legends" cols="30" rows="1" placeholder="Numbers -Separate by comma" class="create-data">35,5</textarea>
+      <textarea name="" id="bar-header-name" cols="100" rows="1" placeholder="" class="create-data">Player Name</textarea>
+      <div class="textArea-labels create-data">Two numbers, separate by a comma, sets max value for legend and amount to increment by. Sample given. /n I'll add a function to add ticks later. </div>
+      <textarea name="" id="bar-legends" cols="100" rows="1" placeholder="Numbers -Separate by comma" class="create-data">35,5</textarea>
       <button class="subit-new create-data">Submit</button>
     </div>
   </div>
 
   <div id="container">
+
 
 
   </div>
@@ -167,7 +170,7 @@
 
     <div class="edit-container button-group">
       <button id="edit">Edit Data</button>
-      <textarea name="edit-area" id="edit-space" cols="30" rows="10" class="edit-data" placeholder="Change any values to what you want, or delete the row to delete data"></textarea>
+      <textarea name="edit-area" id="edit-space" cols="100" rows="10" class="edit-data" placeholder="Change any values to what you want, or delete the row to delete data"></textarea>
       <button id="submit" class="edit-data">Submit</button>
     </div>
 
@@ -179,6 +182,7 @@
 
   <script>
 
+    //Create button function - controls displaying info to create a chart and submit and cancelling.
     $('.new').click(function() {
       if ($(this).text() === 'Create') {
         $(this).text('Cancel');
@@ -189,22 +193,27 @@
       }
     });
 
+    //Main function of the project. Creates a bar chart after grabbing the values from create section.
     $('.subit-new').click(function drawBarChart(data, options, element) {
 
+      //Declaring variables and grabbing the inputs for the data that will be displayed in the chart then storing them as an array.
       let barNames = $('#bar-labels').text();
       let barNamesArray = barNames.split(',');
       let barValues = $('#bar-values').text();
       let barValuesArray = barValues.split(',');
       data = barNamesArray.concat(barValuesArray);
 
+      //Declaring variables and grabbing the inputs for the chart settings storing them as an array.
       let barHeader = $('#bar-header-name').text();
       let barHeaderArray = [barHeader];
-      let barLegends = $('#bar-legends').text();
+      let barLegends = $('#bar-legends').val();
       let barLegendsArray = barLegends.split(',');
       options = barHeaderArray.concat(barLegendsArray);
 
+      //Declaring a variable where the chart will be rendered inside
       element = $('#container');
 
+      //Called to make the bars and the bars names and append them into appropriate html structure with right classes with random colors.
       const barsOut = (data, options, element) => {
           let maxTick = options[1];
           for (let i = 0; i < data.length/2; i++) {
@@ -223,23 +232,27 @@
 
             $gridContainer.append($gridName).appendTo(element);
             $gridContainer.append($gridValue).appendTo(element);
-
           }
         };
 
+        //Called to make the bar header label and the ticks for the graph
         const setTicks = (options, element) => {
           let nameHeader = options[0];
           let maxTick = parseInt(options[1]);
+          let minTick = parseInt(options[2]);
           let tickBy = parseInt(options[2]);
           let ticks = maxTick/tickBy;
 
-          let $gridHeaderContainer = $('<div/>', {class: 'grid-header-container'}),
+          let $gridHeaderContainer = $('<div/>', {
+              class: 'grid-header-container',
+              style: 'grid-template-columns: 300px repeat(' + ticks + ', 1fr)'
+              }),
               $nameHeader = $('<div/>', {class: 'name-header', text: nameHeader});
 
           $gridHeaderContainer.append($nameHeader).appendTo(element);
 
           for (let j = 0; j < ticks; j++) {
-            let $valueHeader = $('<div/>', {class: 'value-header', text: (tickBy+=5)-5});
+            let $valueHeader = $('<div/>', {class: 'value-header', text: (minTick += tickBy) - tickBy});
             $gridHeaderContainer.append($valueHeader).appendTo(element);
           }
         };
@@ -247,12 +260,13 @@
         setTicks(options, element);
         barsOut(data, options, element);
 
+        //Hiding the create section once submit button is clicked
         $('.new').text('Create');
         $('.create-data').hide();
 
     });
 
-    //create a function that will grab the inputs of name and goals, creates grid-container div, with name div and value div that will use the name and goals then run the function below to be able to set the width of the bar accordingly.
+    //Function that will grab the inputs and add a new bar
     $('#add').click(function(name, value, color) {
       $('.edit-data').hide();
       $('#edit').text('Edit Data');
@@ -271,6 +285,7 @@
       $gridContainer.append($gridValue).appendTo('#container');
     });
 
+    //Function that will display textarea and submit button for a user to see. Grabs in the current logged bar data and puts them in the textarea.
     $('#edit').click(function() {
       let editData = $('.edit-data');
       let editButton = $('#edit');
@@ -299,13 +314,13 @@
 
     });
 
+    //Function called when Submit button is called after editing the values inside the text area.
     $('#submit').click(function() {
       $('.grid-container').remove();
 
       let changes = $('#edit-space').val();
       let changesArray = changes.split(',');
       let maxTick = $('.value-header').last();
-      console.log(changesArray);
       for (let i = 0; i < changesArray.length/2 ; i++) {
         let colorR = Math.floor((Math.random() * 256));
         let colorG = Math.floor((Math.random() * 256));
@@ -329,7 +344,7 @@
       $('#edit').text('Edit Data');
     });
 
-
+    
     // console.log(drawBarChart(['Mohamed Salah - 2017/18', '32', 'Mohamed Salah', '22', 'Son Heung-Min', '19', 'Cristiano Ronaldo', '18'], ['Player Name' ,35, 5], $('#container')));
 
   </script>

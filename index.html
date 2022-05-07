@@ -11,67 +11,162 @@
 <body>
   <header>
     <h1>Premier League's Current Top Scorers vs Most Goals Scored In a Season</h1>
-    <h4>2022 - 2023
-</h4>
+    <h4>2022 - 2023</h4>
   </header>
 
-  <div class="button-container">
-    <div class="create-container button-group">
-      <button class="new">Create</button>
-      <div class="create-data">Bar label names separated by commas, here's sample data.</div>
-      <textarea name="" id="bar-labels" cols="100" rows="1" placeholder="Names - Separate by comma" class="create-data">Mohamed Salah - 2017/18,Mohamed Salah,Son Heung-Min,Cristiano Ronaldo</textarea>
-      <div class="create-data">Bar value numbers separated by commas, here's sample data.</div>
-      <textarea name="" id="bar-values" cols="100" rows="1" placeholder="Numbers -Separate by comma" class="create-data">32,22,19,18</textarea>
-      <div class="create-data">Enter a categorization name for the bar labels. Sample given.</div>
-      <textarea name="" id="bar-header-name" cols="100" rows="1" placeholder="" class="create-data">Player Name</textarea>
-      <div class="create-data">Two numbers, separate by a comma, sets max value for legend and amount to increment by. Sample given. /n I'll add a function to add ticks later. </div>
-      <textarea name="" id="bar-legends" cols="100" rows="1" placeholder="Numbers -Separate by comma" class="create-data">35,5</textarea>
-      <button class="subit-new create-data">Submit</button>
+  <div class="settings-button-area">
+    <button class="submit-button confirmation-buttons">Submit</button>
+    <button class="create-button navigation-buttons">Create</button>
+    <button class="add-button navigation-buttons">Add</button>
+    <button class="edit-button navigation-buttons">Edit</button>
+    <button id='cancel-button' class="cancel-button confirmation-buttons">Cancel</button>
+    <button class="edit-bar-chart-button navigation-buttons">Edit Chart</button>
+    <!-- <button class="edit-bar-settings-button navigation-buttons">Edit Settings</button> -->
+  </div>
+
+  <div class="settings-input-area">
+    <div class="create-area-container input-areas">
+      <div class="create-area-text">Names of each bar<br><span>(Separated by comma)</span></div>
+      <textarea cols="30" rows="5" id="create-bar-labels">Mohamed Salah - 2017/18,Mohamed Salah,Son Heung-Min,Cristiano Ronaldo</textarea>
+      <div class="create-area-text">Values of each bar<br><span>(Separated by comma)</span></div>
+      <textarea id="create-bar-values" cols="30" rows="5">32,22,19,18</textarea>
+      <div class="create-area-text">Bar category name for the labels</div>
+      <textarea id="create-bar-category-name" cols="30" rows="5">Player Name</textarea>
+      <div class="create-area-text">Set max legend and tick by amount<br><span>(Separated by comma)</span></div>
+      <textarea id="create-bar-legends" cols="30" rows="5">35,5</textarea>
     </div>
+    <div class="add-area-container input-areas">
+      <input type="text" class="new-bar-label" placeholder="New Bar Label">
+      <input type="number" class="new-bar-value" placeholder="New Bar Value">
+      <input type="text" class="new-color-value" placeholder="Hexcode Color">
+    </div>
+    <div class="edit-area-container input-areas">
+      <div class="edit-bar-chart">Change and upate the values in the bar chart</div>
+      <textarea id="edit-space" cols="100" rows="5" class="edit-bar-chart"></textarea>
+    </div>
+    <div class="edit-settings-container input-areas">
+      <div class="edit-bar-settings">Change and update the bar settings</div>
+      <textarea id="edit-space-settings" cols="100" rows="5" class="edit-bar-settings"></textarea>
+    </div>
+
   </div>
 
   <div id="container"></div>
 
-  <div class="button-container">
-    <div class="add-container button-group">
-      <input type="text" class="new-name" placeholder="Name">
-      <input type="number" class="new-value" placeholder="Goals">
-      <input type="text" class="color" placeholder="Hexcode Color">
-      <button id="add">Add</button>
-    </div>
-    <div class="edit-container button-group">
-      <button id="edit">Edit Data</button>
-      <textarea name="edit-area" id="edit-space" cols="100" rows="10" class="edit-data"></textarea>
-      <button id="submit" class="edit-data">Submit</button>
-    </div>
-  </div>
-
   <script>
-    // Create button function - controls displaying info to create a chart and submit and cancelling.
-    $('.new').click(function() {
-      if ($(this).text() === 'Create') {
-        $(this).text('Cancel');
-        $('.create-data').show();
-      } else {
-        $(this).text('Create');
-        $('.create-data').hide();
+    // Navigation buttons handler
+    const navigationButtons = (event) => {
+      let buttonClass = event.target.className;
+      if (buttonClass.includes('create-button')) {
+        $('.create-button').hide();
+        $('.add-button').hide();
+        $('.edit-button').hide();
+        $('.confirmation-buttons').show();
+        $('.create-area-container').css('display','grid');
+        $('.submit-button').removeAttr('id');
+        $('.submit-button').attr('id', 'submit-create');
+      } else if (buttonClass.includes('add-button')) {
+        $('.create-button').hide();
+        $('.add-button').hide();
+        $('.edit-button').hide();
+        $('.confirmation-buttons').show();
+        $('.add-area-container').css('display','grid');
+        $('.submit-button').removeAttr('id');
+        $('.submit-button').attr('id', 'submit-add');
+      } else if (buttonClass.includes('edit-button')) {
+        $('.create-button').hide();
+        $('.add-button').hide();
+        $('.edit-button').hide();
+        $('.cancel-button').show();
+        $('.edit-bar-chart-button').show();
+        $('.edit-bar-settings-button').show();
+      } else if (buttonClass.includes('edit-bar-chart-button')) {
+        $('.edit-bar-settings-button').hide();
+        $('.confirmation-buttons').show();
+        $('.edit-area-container').css('display','grid');
+        editChart();
+        $('.submit-button').removeAttr('id');
+        $('.submit-button').attr('id', 'submit-edit-chart');
+      } else if (buttonClass.includes('edit-bar-settings-button')) {
+        $('.edit-bar-chart-button').hide();
+        $('.confirmation-buttons').show();
+        $('.edit-settings-container').css('display','grid');
+        editSettings();
+        $('.submit-button').removeAttr('id');
+        $('.submit-button').attr('id', 'submit-edit-settings');
       }
-    });
+    };
 
-    // Main function of the project. Creates a bar chart after grabbing the values from create section.
-    $('.subit-new').click(function drawBarChart(data, options, element) {
+    // Confirmation buttons handler
+    const confirmationButtons = (event) => {
+      let buttonId = event.target.id;
+      if (buttonId.includes('cancel-button')) {
+        $('.create-button').show();
+        $('.add-button').show();
+        $('.edit-button').show();
+        $('.edit-bar-chart-button').hide();
+        $('.edit-bar-settings-button').hide();
+        $('.confirmation-buttons').hide();
+        $('.input-areas').hide();
+        $('.submit-button').removeAttr('id');
+      } else if (buttonId.includes('submit-create')) {
+        drawBarChart();
+        $('.create-button').show();
+        $('.add-button').show();
+        $('.edit-button').show();
+        $('.edit-bar-chart-button').hide();
+        $('.edit-bar-settings-button').hide();
+        $('.confirmation-buttons').hide();
+        $('.input-areas').hide();
+        $('.submit-button').removeAttr('id');
+      } else if (buttonId.includes('submit-add')) {
+        addNewBar();
+        $('.create-button').show();
+        $('.add-button').show();
+        $('.edit-button').show();
+        $('.edit-bar-chart-button').hide();
+        $('.edit-bar-settings-button').hide();
+        $('.confirmation-buttons').hide();
+        $('.input-areas').hide();
+        $('.submit-button').removeAttr('id');
+      } else if (buttonId.includes('submit-edit-chart')) {
+        updateBar();
+        $('.create-button').show();
+        $('.add-button').show();
+        $('.edit-button').show();
+        $('.edit-bar-chart-button').hide();
+        $('.edit-bar-settings-button').hide();
+        $('.confirmation-buttons').hide();
+        $('#edit-space').empty();
+        $('.input-areas').hide();
+        $('.submit-button').removeAttr('id');
+      } else if (buttonId.includes('submit-edit-settings')) {
+        updateBarSettings();
+        $('.create-button').show();
+        $('.add-button').show();
+        $('.edit-button').show();
+        $('.edit-bar-chart-button').hide();
+        $('.edit-bar-settings-button').hide();
+        $('.confirmation-buttons').hide();
+        $('#edit-space-settings').empty();
+        $('.input-areas').hide();
+        $('.submit-button').removeAttr('id');
+      }
+    };
 
+    // Function that will take inputs and generate a new chart and render it on the page
+    const drawBarChart = (data, options, element) => {
       // Declaring variables and grabbing the inputs for the data that will be displayed in the chart then storing them as an array.
-      let barNames = $('#bar-labels').text();
+      let barNames = $('#create-bar-labels').text();
       let barNamesArray = barNames.split(',');
-      let barValues = $('#bar-values').text();
+      let barValues = $('#create-bar-values').text();
       let barValuesArray = barValues.split(',');
       data = barNamesArray.concat(barValuesArray);
 
       // Declaring variables and grabbing the inputs for the chart settings storing them as an array.
-      let barHeader = $('#bar-header-name').text();
+      let barHeader = $('#create-bar-category-name').text();
       let barHeaderArray = [barHeader];
-      let barLegends = $('#bar-legends').val();
+      let barLegends = $('#create-bar-legends').val();
       let barLegendsArray = barLegends.split(',');
       options = barHeaderArray.concat(barLegendsArray);
 
@@ -100,8 +195,8 @@
           }
         };
 
-        // Called to make the bar header label and the ticks for the graph
-        const setTicks = (options, element) => {
+      // Called to make the bar header label and the ticks for the graph
+      const setTicks = (options, element) => {
           let nameHeader = options[0];
           let maxTick = parseInt(options[1]);
           let minTick = parseInt(options[2]);
@@ -122,21 +217,18 @@
           }
         };
 
-        setTicks(options, element);
-        barsOut(data, options, element);
-        // Hiding the create section once submit button is clicked
-        $('.new').text('Create');
-        $('.create-data').hide();
-    });
+      setTicks(options, element);
+      barsOut(data, options, element);
+    };
 
-    // Function that will grab the inputs and add a new bar
-    $('#add').click(function(name, value, color) {
-      $('.edit-data').hide();
-      $('#edit').text('Edit Data');
-      name = $('.new-name').val();
-      value = parseInt($('.new-value').val());
-      color = $('.color').val();
-      let realWidth = Math.floor((parseInt($('.new-value').val())/35) * 100);
+    // Function that will take inputs and add a new bar in an existing chart
+    const addNewBar = (name, value, color) => {
+      name = $('.new-bar-label').val();
+      value = parseInt($('.new-bar-value').val());
+      color = $('.new-color-value').val();
+      let maxTick = $('.value-header').last();
+      let realWidth = Math.floor((value/maxTick.text())*100);
+
       let $gridContainer = $('<div/>', {class: 'grid-container'}),
           $gridName = $('<div/>', {class: 'name', text: name, style: 'background-color:' + color}),
           $gridValue = $('<div/>', {
@@ -146,38 +238,27 @@
 
       $gridContainer.append($gridName).appendTo('#container');
       $gridContainer.append($gridValue).appendTo('#container');
-    });
+    };
 
-    // Function that will display textarea and submit button for a user to see. Grabs in the current logged bar data and puts them in the textarea.
-    $('#edit').click(function() {
-      let editData = $('.edit-data');
-      let editButton = $('#edit');
-
-      if (editButton.text() === 'Edit Data') {
-        editData.show();
-        editButton.text('Close');
-        const nameArray = [];
-        const valueArray = [];
-        const names = $('.name');
-        const values = $('.value');
-        for (let i = 0; i < names.length; i++) {
-          nameArray.push(names[i].innerText);
-        };
-
-        for (let j = 0; j < values.length; j++) {
-          valueArray.push(values[j].innerText);
-        };
-
-        $('#edit-space').text(nameArray + ',' + valueArray);
-
-      } else {
-        editData.hide();
-        editButton.text('Edit Data');
+    // Function that will grab bar chart data and puts them in the text area
+    const editChart = () => {
+      const nameArray = [];
+      const valueArray = [];
+      const names = $('.name');
+      const values = $('.value');
+      for (let i = 0; i < names.length; i++) {
+        nameArray.push(names[i].innerText);
       };
-    });
 
-    // Function called when Submit button is called after editing the values inside the text area.
-    $('#submit').click(function() {
+      for (let j = 0; j < values.length; j++) {
+        valueArray.push(values[j].innerText);
+      };
+
+      $('#edit-space').text(nameArray + ',' + valueArray);
+    };
+
+    // Function that will update the chart after making changes in the textarea after editChart has been completed
+    const updateBar = () => {
       $('.grid-container').remove();
 
       let changes = $('#edit-space').val();
@@ -200,11 +281,46 @@
         $gridContainer.append($gridName).appendTo($('#container'));
         $gridContainer.append($gridValue).appendTo($('#container'));
       }
+    };
 
-      $('#edit-space').empty();
-      $('.edit-data').hide();
-      $('#edit').text('Edit Data');
-    });
+    // Function that will grab the bar chart settings and puts them in the text area
+    const editSettings = (options) => {
+      let header = $('.name-header').text();
+      let maxTick = $('.value-header').last();
+      let tickBy = $('.value-header').first();
+
+      $('#edit-space-settings').text(`${header}, ${maxTick.text()}, ${tickBy.text()}`);
+    };
+
+    // Function that will update the chart settings after making changes in the textarea
+    const updateBarSettings = () => {
+      $('.grid-header-container').remove();
+
+      let newSettings = $('#edit-space-settings').text();
+      let newSettingsArray = newSettings.split(',');
+      let nameHeader = newSettingsArray[0];
+      let maxValue = parseInt(newSettingsArray[1]);
+      let minValue = parseInt(newSettingsArray[2]);
+      let tickBy = parseInt(newSettingsArray[2]);
+      let ticks = maxValue/tickBy;
+
+      let $gridHeaderContainer = $('<div/>', {
+            class: 'grid-header-container',
+            style: 'grid-template-columns: 300px repeat(' + ticks + ', 1fr)'
+          }),
+          $nameHeader = $('<div/>', {class: 'name-header', text: nameHeader});
+
+      $gridHeaderContainer.append($nameHeader).prependTo('#container');
+
+      for (let j = 0; j < ticks; j++) {
+        let $valueHeader = $('<div/>', {class: 'value-header', text: (minValue += tickBy) - tickBy});
+        $gridHeaderContainer.append($valueHeader).appendTo('#container');
+      }
+    };
+
+
+    $('.navigation-buttons').click(navigationButtons);
+    $('.confirmation-buttons').click(confirmationButtons);
   </script>
 </body>
 </html>

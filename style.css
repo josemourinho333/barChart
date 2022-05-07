@@ -10,11 +10,131 @@ h1 {
   font-size: 30px;
 }
 
+button {
+  background-color: #eaf6ff;
+  border: 1px solid #232528;
+  color: #232528;
+  padding: 5px 10px 5px 10px;
+  border-radius: 10px;
+  width: 80%;
+}
+
+button:hover {
+  background-color: #232528;
+  color: white;
+}
+
+.settings-button-area {
+  width: 80%;
+  margin: auto;
+  text-align: center;
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  justify-items: center;
+}
+
+.submit-button {
+  grid-column-start: 1;
+  display: none;
+}
+
+.create-button {
+  grid-column-start: 3;
+}
+
+.add-button {
+  grid-column-start: 4;
+}
+
+.edit-button {
+  grid-column-start: 5;
+}
+
+.cancel-button {
+  grid-column-start: 7;
+  display: none;
+}
+
+.edit-bar-chart-button {
+  grid-column-start: 3;
+  grid-row-start: 1;
+  display: none;
+}
+
+.edit-bar-settings-button {
+  grid-column-start: 5;
+  grid-row-start: 1;
+  display: none;
+}
+
+.settings-input-area {
+  width: 80%;
+  margin: auto;
+  margin-top: 20px;
+}
+
+/* Creating new bar chart section CSS */
+.create-area-container {
+  column-gap: 10px;
+  row-gap: 5px;
+  display:none;
+}
+
+.create-area-text {
+  grid-row-start: 1;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.create-area-text > span {
+  font-weight: 300;
+  font-size: 0.85rem;
+}
+
+.create-area-container > textarea {
+  grid-row-start: 2;
+  height: 3rem;
+}
+
+/* Adding new bar data section CSS */
+.add-area-container {
+  grid-template-columns: 1fr 1fr 1fr;
+  column-gap: 10px;
+  display: none;
+}
+
+/* Editing area section CSS */
+.edit-area-container {
+  grid-template-columns: 1fr;
+  justify-items: center;
+  display: none;
+}
+
+.edit-area-container > div {
+  font-weight: 600;
+  font-size: 1rem;
+  margin-bottom: 10px;
+}
+
+/* Editing chart settings section CSS */
+.edit-settings-container {
+  grid-template-columns: 1fr;
+  justify-items: center;
+  display: none;
+}
+
+.edi-tsettings-container > div {
+  font-weight: 600;
+  font-size: 1rem;
+  margin-bottom: 10px;
+}
+
 #container {
   width: 80%;
   margin: auto;
   display: flex;
   flex-direction: column;
+  margin-top: 30px;
 }
 
 .grid-header-container {
@@ -63,54 +183,7 @@ h1 {
   width: 150px;
 }
 
-.button-container {
-  width: 80%;
-  margin: auto;
-}
 
-.button-group {
-  margin: 10px;
-  align-items: center;
-  text-align: center;
-}
 
-button {
-  background-color: #eaf6ff;
-  border: 1px solid #232528;
-  color: #232528;
-  padding: 5px 10px 5px 10px;
-  border-radius: 10px;
-  width: 20%;
-}
 
-button:hover {
-  background-color: #232528;
-  color: white;
-}
 
-.edit-data {
-  display: none;
-}
-
-.edit-container {
-  display: flex;
-  flex-direction: column;
-}
-
-.edit-container > button {
-  margin: 10px 0px 10px 0px;
-}
-
-.create-container {
-  display: flex;
-  flex-direction: column;
-}
-
-.create-container > button {
-  margin: 10px 0px 10px 0px;
-}
-
-.create-data {
-  display: none;
-  margin: 5px;
-}

@@ -9,9 +9,8 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 </head>
 <body>
-  <header>
+  <header class="bar-title">
     <h1>Premier League's Current Top Scorers vs Most Goals Scored In a Season</h1>
-    <h4>2022 - 2023</h4>
   </header>
 
   <div class="settings-button-area">
@@ -22,6 +21,7 @@
     <button id='cancel-button' class="cancel-button confirmation-buttons">Cancel</button>
     <button class="edit-bar-chart-button navigation-buttons">Edit Chart</button>
     <button class="edit-bar-settings-button navigation-buttons">Edit Settings</button>
+    <button class="edit-title-button navigation-buttons">Edit Title</button>
   </div>
 
   <div class="settings-input-area">
@@ -47,6 +47,10 @@
     <div class="edit-settings-container input-areas">
       <div class="edit-bar-settings">Change and update the bar settings</div>
       <textarea id="edit-space-settings" cols="100" rows="5" class="edit-bar-settings"></textarea>
+    </div>
+    <div class="edit-title-container input-areas">
+      <div class="edit-title">Change the title of your chart</div>
+      <textarea id="edit-title" cols="100" rows="2"></textarea>
     </div>
 
   </div>

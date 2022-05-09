@@ -24,8 +24,10 @@ const navigationButtons = (event) => {
     $('.cancel-button').show();
     $('.edit-bar-chart-button').show();
     $('.edit-bar-settings-button').show();
+    $('.edit-title-button').show();
   } else if (buttonClass.includes('edit-bar-chart-button')) {
     $('.edit-bar-settings-button').hide();
+    $('.edit-title-button').hide();
     $('.confirmation-buttons').show();
     $('.edit-area-container').css('display','grid');
     editChart();
@@ -33,11 +35,20 @@ const navigationButtons = (event) => {
     $('.submit-button').attr('id', 'submit-edit-chart');
   } else if (buttonClass.includes('edit-bar-settings-button')) {
     $('.edit-bar-chart-button').hide();
+    $('.edit-title-button').hide();
     $('.confirmation-buttons').show();
     $('.edit-settings-container').css('display','grid');
     editSettings();
     $('.submit-button').removeAttr('id');
     $('.submit-button').attr('id', 'submit-edit-settings');
+  } else if (buttonClass.includes('edit-title-button')) {
+    $('.edit-bar-chart-button').hide();
+    $('.edit-bar-settings-button').hide();
+    $('.confirmation-buttons').show();
+    $('.edit-title-container').css('display','grid');
+    editTitle();
+    $('.submit-button').removeAttr('id');
+    $('.submit-button').attr('id', 'submit-edit-title');
   }
 };
 
@@ -50,6 +61,7 @@ const confirmationButtons = (event) => {
     $('.edit-button').show();
     $('.edit-bar-chart-button').hide();
     $('.edit-bar-settings-button').hide();
+    $('.edit-title-button').hide();
     $('.confirmation-buttons').hide();
     $('.input-areas').hide();
     $('.submit-button').removeAttr('id');
@@ -60,6 +72,7 @@ const confirmationButtons = (event) => {
     $('.edit-button').show();
     $('.edit-bar-chart-button').hide();
     $('.edit-bar-settings-button').hide();
+    $('.edit-title-button').hide();
     $('.confirmation-buttons').hide();
     $('.input-areas').hide();
     $('.submit-button').removeAttr('id');
@@ -70,6 +83,7 @@ const confirmationButtons = (event) => {
     $('.edit-button').show();
     $('.edit-bar-chart-button').hide();
     $('.edit-bar-settings-button').hide();
+    $('.edit-title-button').hide();
     $('.confirmation-buttons').hide();
     $('.input-areas').hide();
     $('.submit-button').removeAttr('id');
@@ -80,6 +94,7 @@ const confirmationButtons = (event) => {
     $('.edit-button').show();
     $('.edit-bar-chart-button').hide();
     $('.edit-bar-settings-button').hide();
+    $('.edit-title-button').hide();
     $('.confirmation-buttons').hide();
     $('#edit-space').empty();
     $('.input-areas').hide();
@@ -91,8 +106,21 @@ const confirmationButtons = (event) => {
     $('.edit-button').show();
     $('.edit-bar-chart-button').hide();
     $('.edit-bar-settings-button').hide();
+    $('.edit-title-button').hide();
     $('.confirmation-buttons').hide();
     $('#edit-space-settings').empty();
+    $('.input-areas').hide();
+    $('.submit-button').removeAttr('id');
+  } else if (buttonId.includes('submit-edit-title')) {
+    updateBarTitle();
+    $('.create-button').show();
+    $('.add-button').show();
+    $('.edit-button').show();
+    $('.edit-bar-chart-button').hide();
+    $('.edit-bar-settings-button').hide();
+    $('.edit-title-button').hide();
+    $('.confirmation-buttons').hide();
+    $('#edit-title').empty();
     $('.input-areas').hide();
     $('.submit-button').removeAttr('id');
   }
@@ -263,18 +291,15 @@ const updateBarSettings = () => {
 
   let barNames = $('.name');
   let barNamesArray = [];
+  let barValues = $('.value');
+  let barValuesArray = [];
   for (let x = 0; x < barNames.length; x++) {
     barNamesArray.push(barNames.eq(x).text());
   }
-
-  let barValues = $('.value');
-  let barValuesArray = [];
   for (let y = 0; y < barValues.length; y++) {
     barValuesArray.push(barValues.eq(y).text());
   }
-
   let data = barNamesArray.concat(barValuesArray);
-  console.log(data);
 
   $('.grid-container').remove();
 
@@ -295,6 +320,20 @@ const updateBarSettings = () => {
     $gridContainer.append($gridName).appendTo('#container');
     $gridContainer.append($gridValue).appendTo('#container');
   };
+};
+
+//Function grabs the current title into the textarea for user to make changes
+const editTitle = () => {
+  let title = $('h1').text()
+  $('#edit-title').text(title);
+}
+
+// Function that will allow the user to change chart's title
+const updateBarTitle = () => {
+  $('h1').remove();
+  let title = $('#edit-title').val();
+  let $newTitle = $('<h1/>', {text: title});
+  $newTitle.appendTo('.bar-title');
 };
 
 

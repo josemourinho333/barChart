@@ -34,20 +34,20 @@ button:hover {
 }
 
 .submit-button {
-  grid-column-start: 1;
+  grid-column-start: 6;
   display: none;
 }
 
 .create-button {
-  grid-column-start: 3;
+  grid-column-start: 1;
 }
 
 .add-button {
-  grid-column-start: 4;
+  grid-column-start: 2;
 }
 
 .edit-button {
-  grid-column-start: 5;
+  grid-column-start: 3;
 }
 
 .cancel-button {
@@ -56,13 +56,13 @@ button:hover {
 }
 
 .edit-bar-chart-button {
-  grid-column-start: 3;
+  grid-column-start: 1;
   grid-row-start: 1;
   display: none;
 }
 
 .edit-bar-settings-button {
-  grid-column-start: 5;
+  grid-column-start: 2;
   grid-row-start: 1;
   display: none;
 }
@@ -123,7 +123,7 @@ button:hover {
   display: none;
 }
 
-.edi-tsettings-container > div {
+.edit-settings-container > div {
   font-weight: 600;
   font-size: 1rem;
   margin-bottom: 10px;
